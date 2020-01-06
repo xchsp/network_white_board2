@@ -7,11 +7,18 @@ class WhiteBoard:
               'd': 'black', 's': 'snow'}
 
     def __init__(self):
+        self.color = 'b'
         self.init_whiteboard()
         self._init_item_button()
         self._init_color_button()
+        self.init_drawing_area()
+
+    def show_window(self):
         self.myWhiteBoard.mainloop()
-        self.color = 'b'
+
+    def init_drawing_area(self):
+        self.drawing_area = Canvas(self.myWhiteBoard,width = 1000,height = 700,bg='white')
+        self.drawing_area.place(y=50)
 
     def init_whiteboard(self):
         self.myWhiteBoard = Tk()

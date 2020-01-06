@@ -25,7 +25,7 @@ class Server:
             for client in Server.Clients:
                 try:
                     msg = 'ß'.encode('ISO-8859-1')
-                    print('ß')
+                    # print('ß')
                     client.sock.send(msg)
                 except ConnectionResetError:
                     print('ConnectionResetError')
@@ -81,6 +81,8 @@ class Client:
 
     def start(self):
         while self._run:
+            msg =  self.sock.recv(1024).decode('ISO-8859-1')
+            print(msg)
             time.sleep(0.1)
             pass
 

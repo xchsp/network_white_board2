@@ -9,6 +9,14 @@ class UserDialog:
         pass
 
     @classmethod
+    def show_error_box(cls, msg):
+        master = Tk()
+        Label(master, text=msg).grid(row=0)
+        Button(master, text='OK', command=master.destroy).grid(row=1, pady=4)
+        master.mainloop()
+
+
+    @classmethod
     def getUserInputIp(cls):
         def getUserIpAndPort():
             cls._Ip = e1.get()

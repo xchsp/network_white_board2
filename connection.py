@@ -42,14 +42,20 @@ class Connection:
             pass
 
     def receive_msg(self):
+        msg = ''
         while True:
-            time.sleep(0.1)
             data = self.sock.recv(1).decode('ISO-8859-1')
             if data == 'ß':
                 # print('ß')
                 continue
+            elif data == 'Ø':
+                break
             else:
                 pass
+
+            msg += data
+
+        return msg
 
 if __name__ == '__main__':
     conn = Connection()

@@ -48,10 +48,12 @@ class Client(Thread,WhiteBoard):
         # print('run')aa
         while True:
             msg = self.conn.receive_msg()
+            self.draw_from_msg(msg)
+            # print(msg)
             if msg == 'xxx':
                 pass
             # print('i am running')
-            time.sleep(0.1)
+            # time.sleep(0.1)
 
 if __name__ == '__main__':
     client = Client()

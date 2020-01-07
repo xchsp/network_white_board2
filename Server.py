@@ -87,7 +87,7 @@ class Client:
                 if data == 'Ø':
                     break
 
-            # print(msg)
+            print(msg)
 
             if msg[0] == 'D':
                 self.broadcast2Clients(msg)

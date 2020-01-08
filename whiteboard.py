@@ -14,22 +14,26 @@ class WhiteBoard:
     def draw_pencil(self, msgLst):
         startX,startY,endX,endY = int(msgLst[1]),int(msgLst[2]),int(msgLst[3]),int(msgLst[4])
         color = msgLst[5]
-        self.drawing_area.create_line(startX,startY,endX,endY,fill=color,width=self.line_width)
+        msgid = msgLst[6]
+        self.drawing_area.create_line(startX,startY,endX,endY,fill=color,width=self.line_width,tags=(msgid,))
 
     def draw_Rectangle(self, msgLst):
         startX,startY,endX,endY = int(msgLst[1]),int(msgLst[2]),int(msgLst[3]),int(msgLst[4])
         color = msgLst[5]
-        self.drawing_area.create_rectangle(startX,startY,endX,endY,fill=color,width=0)
+        msgid = msgLst[6]
+        self.drawing_area.create_rectangle(startX,startY,endX,endY,fill=color,width=0,tags=(msgid,))
 
     def draw_Line(self, msgLst):
         startX,startY,endX,endY = int(msgLst[1]),int(msgLst[2]),int(msgLst[3]),int(msgLst[4])
         color = msgLst[5]
-        self.drawing_area.create_line(startX,startY,endX,endY,fill=color,width=self.line_width)
+        msgid = msgLst[6]
+        self.drawing_area.create_line(startX,startY,endX,endY,fill=color,width=self.line_width,tags=(msgid,))
 
     def draw_Oral(self, msgLst):
         startX,startY,endX,endY = int(msgLst[1]),int(msgLst[2]),int(msgLst[3]),int(msgLst[4])
         color = msgLst[5]
-        self.drawing_area.create_oval(startX,startY,endX,endY,fill=color,width=0)
+        msgid = msgLst[6]
+        self.drawing_area.create_oval(startX,startY,endX,endY,fill=color,width=0,tags=(msgid,))
 
     def draw_Circle(self, msgLst):
         startX,startY,endX,endY = int(msgLst[1]),int(msgLst[2]),int(msgLst[3]),int(msgLst[4])
@@ -37,21 +41,24 @@ class WhiteBoard:
         y_center = (startY+endY) / 2
         radius = math.sqrt((endX - startX)**2 + (endY - startY)**2) / 2
         color = msgLst[5]
-        self.drawing_area.create_oval(x_center-radius,y_center-radius,x_center+radius,y_center+radius,fill=color,width=0)
+        msgid = msgLst[6]
+        self.drawing_area.create_oval(x_center-radius,y_center-radius,x_center+radius,y_center+radius,fill=color,width=0,tags=(msgid,))
 
     def draw_Square(self, msgLst):
         startX,startY,endX,endY = int(msgLst[1]),int(msgLst[2]),int(msgLst[3]),int(msgLst[4])
         color = msgLst[5]
         edge_size = ((endX-startX) + (endY - startY)) / 2
-        self.drawing_area.create_rectangle(startX,startY,startX+edge_size,startY+edge_size,fill=color,width=0)
+        msgid = msgLst[6]
+        self.drawing_area.create_rectangle(startX,startY,startX+edge_size,startY+edge_size,fill=color,width=0,tags=(msgid,))
 
     def draw_Text(self, msgLst):
-        textLst = msgLst[4:]
+        textLst = msgLst[4:-1]
         text = ' '.join(textLst)
         x,y = msgLst[1],msgLst[2]
         color = msgLst[3]
+        msgid = msgLst[-1]
         text_font = font.Font(family='Helvetica', size=50, weight='bold', slant='italic')
-        self.drawing_area.create_text(x, y, fill=color, font=text_font, text=text)
+        self.drawing_area.create_text(x, y, fill=color, font=text_font, text=text,tags=(msgid,))
 
     def draw_from_msg(self,msg):
         msgLst = msg.split()
@@ -70,6 +77,8 @@ class WhiteBoard:
             self.draw_Square(msgLst)
         elif draw_type == 'T':
             self.draw_Text(msgLst)
+        elif draw_type == 'Z':
+            self.delete_obj(msgLst)
         else:
             pass
 
@@ -79,6 +88,11 @@ class WhiteBoard:
         self._init_item_button()
         self._init_color_button()
         self.init_drawing_area()
+
+    def delete_obj(self,msgLst):
+        # self.drawing_area.delete(msgLst[1])
+        item = self.drawing_area.find_withtag(msgLst[1])
+        self.drawing_area.delete(item)
 
     def show_window(self):
         self.myWhiteBoard.mainloop()

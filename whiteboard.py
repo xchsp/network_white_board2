@@ -1,5 +1,8 @@
 import math
 from tkinter import *
+from tkinter import font
+
+from UserDialog import UserDialog
 
 class WhiteBoard:
     drawing_tool = "line"
@@ -42,6 +45,14 @@ class WhiteBoard:
         edge_size = ((endX-startX) + (endY - startY)) / 2
         self.drawing_area.create_rectangle(startX,startY,startX+edge_size,startY+edge_size,fill=color,width=0)
 
+    def draw_Text(self, msgLst):
+        textLst = msgLst[4:]
+        text = ' '.join(textLst)
+        x,y = msgLst[1],msgLst[2]
+        color = msgLst[3]
+        text_font = font.Font(family='Helvetica', size=50, weight='bold', slant='italic')
+        self.drawing_area.create_text(x, y, fill=color, font=text_font, text=text)
+
     def draw_from_msg(self,msg):
         msgLst = msg.split()
         draw_type = msgLst[0]
@@ -57,6 +68,8 @@ class WhiteBoard:
             self.draw_Circle(msgLst)
         elif draw_type == 'S':
             self.draw_Square(msgLst)
+        elif draw_type == 'T':
+            self.draw_Text(msgLst)
         else:
             pass
 
@@ -85,6 +98,10 @@ class WhiteBoard:
         print(color)
         self.color = color
 
+    def get_text_from_user(self):
+        WhiteBoard.drawing_tool = 'text'
+        UserDialog.get_text_from_user()
+
     def _init_item_button(self):
         Button(self.myWhiteBoard, text='line', height=1, width=5, bg='dark goldenrod', font='Arial',
                command=lambda: self.set_drawing_tool('line')).place(x=70, y=0)
@@ -92,8 +109,8 @@ class WhiteBoard:
                command=lambda: self.set_drawing_tool('rectangle')).place(x=140, y=0)
         Button(self.myWhiteBoard, text='oval', height=1, width=5, bg='NavajoWhite4', font='Arial',
                command=lambda: self.set_drawing_tool('oval')).place(x=210, y=0)
-        # Button(self.myWhiteBoard, text='text', height=1, width=5, bg='SteelBlue4', font='Arial',
-        #        command=self.get_text_from_user).place(x=280, y=0)
+        Button(self.myWhiteBoard, text='text', height=1, width=5, bg='SteelBlue4', font='Arial',
+               command=self.get_text_from_user).place(x=280, y=0)
         Button(self.myWhiteBoard, text='pencil', height=1, width=5, bg='DeepSkyBlue2', font='Arial',
                command=lambda: self.set_drawing_tool('pencil')).place(x=350, y=0)
         Button(self.myWhiteBoard, text='circle', height=1, width=5, bg='Turquoise2', font='Arial',

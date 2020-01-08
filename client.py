@@ -3,7 +3,7 @@ from threading import Thread
 
 from connection import Connection
 from whiteboard import WhiteBoard
-
+from UserDialog import UserDialog
 
 class Client(Thread,WhiteBoard):
     Objects = {'line': 'L', 'oval': 'O', 'circle': 'C', 'rectangle': 'R', 'square': 'S', 'erase': 'E', 'drag': 'DR'}
@@ -41,7 +41,15 @@ class Client(Thread,WhiteBoard):
         print(event.x,event.y)
         self.last_time = None
         self.line_x2, self.line_y2 = event.x, event.y
-        self.draw_one_obj()
+        if self.drawing_tool == 'text':
+            self.draw_text()
+        else:
+            self.draw_one_obj()
+
+    def draw_text(self):
+        text_to_draw = UserDialog._Text
+        msg = ('T', self.line_x1, self.line_y1, 'red',text_to_draw)
+        self.conn.send_message(msg)
 
     def draw_one_obj(self):
         tool = self.drawing_tool

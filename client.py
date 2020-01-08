@@ -39,7 +39,7 @@ class Client(Thread,WhiteBoard):
 
 
     #(tpye，startx,starty,endx,endy,color)
-    #('D',startx,starty,endx,endy,'red')
+    #('D',startx,starty,endx,endy,self.color)
     def left_but_down(self,event=None):
         self.isMouseDown = True
         self.x_pos = event.x
@@ -72,12 +72,13 @@ class Client(Thread,WhiteBoard):
 
 
     def do_drag(self):
-        msg = ('DR', self.last_click_obj, self.line_x2 - self.line_x1, self.line_y2 - self.line_y1)
-        self.conn.send_message(msg)
+        if self.last_click_obj != None:
+            msg = ('DR', self.last_click_obj, self.line_x2 - self.line_x1, self.line_y2 - self.line_y1)
+            self.conn.send_message(msg)
 
     def draw_text(self):
         text_to_draw = UserDialog._Text
-        msg = ('T', self.line_x1, self.line_y1, 'red',text_to_draw)
+        msg = ('T', self.line_x1, self.line_y1, self.color,text_to_draw)
         self.conn.send_message(msg)
 
     def draw_one_obj(self):
@@ -86,11 +87,11 @@ class Client(Thread,WhiteBoard):
             return
         else:
             cmd_type = Client.Objects[tool]
-            msg = (cmd_type, self.line_x1, self.line_y1, self.line_x2, self.line_y2, 'red')
+            msg = (cmd_type, self.line_x1, self.line_y1, self.line_x2, self.line_y2, self.color)
             self.conn.send_message(msg)
 
     # (tpye，startx,starty,endx,endy,color)
-    # ('D',startx,starty,endx,endy,'red')
+    # ('D',startx,starty,endx,endy,self.color)
     def motion(self,event=None):
         if self.isMouseDown == True and self.drawing_tool == 'pencil':
             now = time.time()
@@ -98,7 +99,7 @@ class Client(Thread,WhiteBoard):
                 print('too fast')
                 return
             self.last_time = now
-            msg = ('D',self.x_pos,self.y_pos,event.x,event.y,'red')
+            msg = ('D',self.x_pos,self.y_pos,event.x,event.y,self.color)
             self.conn.send_message(msg)
             self.x_pos = event.x
             self.y_pos = event.y

@@ -99,7 +99,7 @@ class Client:
 
 
 
-            if msg[0] in ['D','R','L','O','C','S','T']:
+            if msg[0] in ['D','R','L','O','C','S','T','DR']:
                 self.broadcast2Clients(msg)
             elif msg[0] in ['Z']:
                 splitmsg = msg.split()
@@ -118,6 +118,7 @@ class Client:
 
     # 'C 11 22 33 44 red Ø'-> 'C 11 22 33 44 red m105 Ø'
     def broadcast2Clients(self,msg):
+
         msg = msg[:-1] + str(Client.msgID) + ' Ø' #假设Client.msgID = 105
         Server.logs[Client.msgID] = msg
         msg = msg.encode('ISO-8859-1')
@@ -125,6 +126,7 @@ class Client:
             client.sock.sendall(msg)
 
         Client.msgID += 1
+        print(Server.logs)
 
 
 

@@ -1,11 +1,21 @@
 from tkinter import *
 
+
+def left_but_down(event):
+    tts = cv.gettags('current')
+    print(tts)
+
 root=Tk()
 cv=Canvas(root,bg='white')
 
-rt3=cv.create_rectangle(30,30,70,70,tags=('y1','y2','y3'), fill='blue')
-rt1=cv.create_rectangle(10,10,110,110,tags=('m0',))
-rt2=cv.create_rectangle(20,20,80,80,tags=('m1',), fill='red')
+
+rt1=cv.create_rectangle(10,10,110,110,tags=('m0','m1'),fill='red')
+rt2=cv.create_rectangle(20,20,80,80,tags=('m3','m4'), fill='blue')
+
+# rt3=cv.create_rectangle(30,30,70,70,tags=('y1','y2','y3'), fill='blue')
+
+cv.bind("<ButtonPress-1>", left_but_down)
+
 
 
 # lst = cv.gettags(rt1)

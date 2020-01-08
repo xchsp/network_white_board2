@@ -61,6 +61,7 @@ class WhiteBoard:
         self.drawing_area.create_text(x, y, fill=color, font=text_font, text=text,tags=(msgid,))
 
     def draw_from_msg(self,msg):
+        print(msg)
         msgLst = msg.split()
         draw_type = msgLst[0]
         if draw_type == 'D':
@@ -79,6 +80,8 @@ class WhiteBoard:
             self.draw_Text(msgLst)
         elif draw_type == 'Z':
             self.delete_obj(msgLst)
+        elif draw_type == 'DR':
+            self.drag_obj(msgLst)
         else:
             pass
 
@@ -88,6 +91,10 @@ class WhiteBoard:
         self._init_item_button()
         self._init_color_button()
         self.init_drawing_area()
+
+    def drag_obj(self, msgLst):
+        item = self.drawing_area.find_withtag(msgLst[1])
+        self.drawing_area.move(item,int(msgLst[2]),int(msgLst[3]))
 
     def delete_obj(self,msgLst):
         # self.drawing_area.delete(msgLst[1])
